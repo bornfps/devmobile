@@ -20,39 +20,59 @@ export async function menuCidade(){
         if (opcao == "1"){
             const ufs = await listUFs();
             console.log("UFs encontradas: ");
-            ufs.forEach(r => {
-                console.log(`${r.sigla} - ${r.nome} - ${r.id}`);
+            ufs.forEach((r, index) => {
+                console.log(`${index + 1}. ${r.nome} - ${r.sigla}`);
             });
-            const nome = prompt("Informe o nome do Cidade: ") || "";
-            const ufId = prompt("Informe o ID do UF: ") || "";
-            await createCidade(nome, ufId);
+
+            const escolha = parseInt(prompt("Informe o número do UF para a cidade: ") || "");
+            const ufSelecionada = ufs[escolha - 1];
+
+            if (ufSelecionada) {
+                const nome = prompt("Informe o nome da cidade: ") || "";
+                await createCidade(nome, ufSelecionada.id);
+            } else {
+                console.log("Opção inválida. Por favor, tente novamente.");
+            }
         } else if (opcao == "2"){
             const cidades = await listCidades();
             console.log(`Cidades encontradas: `);
             cidades.forEach(r => {
-                console.log(`${r.uf.sigla} - ${r.uf.nome} - ${r.cidade.nome} - ${r.cidade.id}`);
+                console.log(`${r.uf.sigla} - ${r.uf.nome} - ${r.cidade.nome}`);
             });
             
         } else if (opcao == "3"){
             const cidades = await listCidades();
             console.log(`Cidades encontradas: `);
-            cidades.forEach(r => {
-                console.log(`${r.uf.sigla} - ${r.uf.nome} - ${r.cidade.nome} - ${r.cidade.id}`);
+            cidades.forEach((r, index) => {
+                console.log(`${index + 1}. ${r.uf.sigla} - ${r.uf.nome} - ${r.cidade.nome}`);
             });
-            const id = prompt("Informe o ID da cidade a ser atualizada: ") || "";
-            const nome = prompt("Informe novo nome da cidade: ") || "";
-            const ufId = prompt("Informe o ID do UF: ") || "";
-            await updateCidade(id, nome, ufId);
-            console.log("Cidade atualizada com sucesso!");
+            
+
+            const escolha = parseInt(prompt("Informe o número da cidade que deseja atualizar: ") || "");
+            const cidadeEscolhida = cidades[escolha - 1];
+
+            if (cidadeEscolhida) {
+                const nome = prompt("Informe o novo nome da cidade: ") || "";
+                await updateCidade(cidadeEscolhida.cidade.id, nome, cidadeEscolhida.cidade.ufId);
+            } else {
+                console.log("Opção inválida. Por favor, tente novamente.");
+            }
         } else if (opcao == "4"){
             const cidades = await listCidades();
             console.log(`Cidades encontradas: `);
-            cidades.forEach(r => {
-                console.log(`${r.uf.sigla} - ${r.uf.nome} - ${r.cidade.nome} - ${r.cidade.id}`);
+            cidades.forEach((r, index) => {
+                console.log(`${index + 1}. ${r.uf.sigla} - ${r.uf.nome} - ${r.cidade.nome}`);
             });
-            const id = prompt("Informe o ID da cidade que deseja deletar: ") || "";
-            await deleteCidade(id);
-            console.log("Cidade deletada com sucesso!");
+            
+            const escolha = parseInt(prompt("Informe o número da cidade que deseja deletar: ") || "");
+            const cidadeEscolhida = cidades[escolha - 1];
+
+            if (cidadeEscolhida){
+                await deleteCidade(cidadeEscolhida.cidade.id);
+                console.log("Cidade deletada com sucesso!");
+            } else{
+                console.log("Opção inválida. Por favor, tente novamente.");
+            }
         }
     }
 }

@@ -10,11 +10,11 @@ export const uf = sqliteTable("uf", {
 export const cidade = sqliteTable("cidade", {
     id: text("id").primaryKey().$defaultFn(() => uuidv4()),
     nome: text("nome").notNull(),
-    ufId: text("uf_id").notNull().references(() => uf.id)
+    ufId: text("uf_id").notNull().references(() => uf.id, { onDelete: "cascade" })
 })
 
 export const regiao = sqliteTable("regiao", {
     id: text("id").primaryKey().$defaultFn(() => uuidv4()),
     nome: text("nome").notNull(),
-    cidadeId: text("cidade_id").notNull().references(() => cidade.id)
+    cidadeId: text("cidade_id").notNull().references(() => cidade.id, { onDelete: "cascade" })
 }) 

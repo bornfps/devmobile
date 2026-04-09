@@ -10,7 +10,7 @@ export async function menuRegiao(){
     while (opcao !== "0"){
         console.log("=== MENU REGIÃO ===");
         console.log("1. Criar Região");
-        console.log("2. Lista regiões existentes");
+        console.log("2. Listar Regiões");
         console.log("3. Atualizar Região");
         console.log("4. Deletar Região");
         console.log("0. Sair do menu");
@@ -20,38 +20,58 @@ export async function menuRegiao(){
         if (opcao == "1"){
             const cidades = await listCidades();
             console.log("Cidades Encontradas: ");
-            cidades.forEach(c => {
-                console.log(`${c.cidade.id} - ${c.uf.sigla} - ${c.cidade.nome}`);
-            })
-            const nome = prompt("Informe o nome do Região: ") || "";
-            const cidadeId = prompt("Informe o ID da Cidade: ") || "";
-            await createRegiao(nome, cidadeId);
+            cidades.forEach((c, index) => {
+                console.log(`${index + 1}. ${c.uf.sigla} - ${c.cidade.nome}`);
+            });
+            
+            const escolhaCidade = parseInt(prompt("Informe o número da cidade para a região: "));
+            const cidadeSelecionada = cidades[escolhaCidade - 1];
+
+            if (cidadeSelecionada) {
+                const nome = prompt("Informe o nome da Região: ") || "";
+                await createRegiao(nome, cidadeSelecionada.cidade.id);
+            } else {
+                console.log("Opção inválida. Por favor, tente novamente.");
+            }
         } else if (opcao == "2"){
             const regioes = await listRegioes();
             console.log(`Regiões encontradas: `);
             regioes.forEach(r => {
-                console.log(`${r.uf.sigla} - ${r.cidade.nome} - ${r.regiao.nome}`)
+                console.log(`${r.uf.sigla} - ${r.cidade.nome} - ${r.regiao.nome}`);
             });
         } else if (opcao == "3"){
             const regioes = await listRegioes();
             console.log(`Regiões encontradas: `);
-            regioes.forEach(r => {
-                console.log(`${r.uf.sigla} - ${r.cidade.nome} - ${r.regiao.nome}`)
+            regioes.forEach((r, index) => {
+                console.log(`${index + 1}. ${r.uf.sigla} - ${r.cidade.nome} - ${r.regiao.nome}`);
             });
-            const id = prompt("Informe o ID da região a ser atualizado: ") || "";
-            const nome = prompt("Informe novo nome da região: ") || "";
-            const cidadeId = prompt("Informe o ID da cidade: ") || "";
-            await updateRegiao(id, nome, cidadeId);
-            console.log("Região atualizada com sucesso!");
+
+            const escolha = parseInt(prompt("Informe o número da região que deseja atualizar: "));
+            const regiaoSelecionada = regioes[escolha - 1];
+
+            if (regiaoSelecionada) {
+                const nome = prompt("Informe o novo nome da região: ") || "";
+                await updateRegiao(regiaoSelecionada.regiao.id, nome, regiaoSelecionada.regiao.cidadeId);
+                console.log("Região atualizada com sucesso!");
+            } else{
+                console.log("Opção inválida. Por favor, tente novamente.");
+            }
         } else if (opcao == "4"){
             const regioes = await listRegioes();
             console.log(`Regiões encontradas: `);
-            regioes.forEach(r => {
-                console.log(`${r.uf.sigla} - ${r.cidade.nome} - ${r.regiao.nome}`)
+            regioes.forEach((r, index) => {
+                console.log(`${index + 1}. ${r.uf.sigla} - ${r.cidade.nome} - ${r.regiao.nome}`);
             });
-            const id = prompt("Informe o ID da região que deseja deletar: ") || "";
-            await deleteRegiao(id);
-            console.log("Região deletada com sucesso!");
+            
+            const escolha = parseInt(prompt("Informe o número da região que deseja deletar: "));
+            const regiaoSelecionada = regioes[escolha - 1];
+
+            if (regiaoSelecionada) {
+                await deleteRegiao(regiaoSelecionada.regiao.id);
+                console.log("Região deletada com sucesso!");
+            } else {
+                console.log("Opção inválida. Por favor, tente novamente.");
+            }
         }   
     }
 }

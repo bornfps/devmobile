@@ -23,29 +23,42 @@ export async function menuUF(){
         } else if (opcao == "2"){
             const ufs = await listUFs();
             console.log(`UFs encontrados: `);
-            ufs.forEach(u => {
-                console.log(`${u.id} - ${u.sigla} - ${u.nome}`);
+            ufs.forEach((u, index) => {
+                console.log(`${index + 1} - ${u.sigla} - ${u.nome}`);
             });
         } else if (opcao == "3"){
             const ufs = await listUFs();
             console.log(`UFs encontrados: `);
-            ufs.forEach(u => {
-                console.log(`${u.id} - ${u.sigla} - ${u.nome}`);
+            ufs.forEach((u, index) => {
+                console.log(`${index  + 1}. ${u.sigla} - ${u.nome}`);
             });
-            const id = prompt("Informe o ID do UF a ser atualizado: ") || "";
-            const nome = prompt("Informe novo nome do UF: ") || "";
-            const sigla = prompt("Informe nova sigla do UF: ") || "";
-            await updateUF(id, nome, sigla);
-            console.log("UF atualizado com sucesso!");
+            
+            const escolha = parseInt(prompt("Informe o número do UF que deseja atualizar: "));
+            const ufSelecionada = ufs[escolha - 1];
+
+            if (ufSelecionada) {
+                const nome = prompt("Informe o novo nome do UF: ") || "";
+                const sigla = prompt("Informe a nova sigla do UF: ") || "";
+                await updateUF(ufSelecionada.id, nome, sigla);
+            } else{
+                console.log("Opção inválida. Por favor, tente novamente.");
+            }
         } else if (opcao == "4"){
             const ufs = await listUFs();
             console.log(`UFs encontrados: `);
-            ufs.forEach(u => {
-                console.log(`${u.id} - ${u.sigla} - ${u.nome}`);
+            ufs.forEach((u, index)=> {
+                console.log(`${index + 1} - ${u.sigla} - ${u.nome}`);
             });
-            const id = prompt("Informe o ID do UF que deseja deletar: ") || "";
-            await deleteUF(id);
-            console.log("UF deletado com sucesso!");
+
+            const escolha = parseInt(prompt("Informe o número do UF que deseja deletar: "));
+            const ufSelecionada = ufs[escolha - 1];
+
+            if (ufSelecionada){
+                await deleteUF(ufSelecionada.id);
+                console.log("UF deletado com sucesso!");
+            } else{
+                console.log("Opção inválida. Por favor, tente novamente.");
+            }
         }
     }
 }
