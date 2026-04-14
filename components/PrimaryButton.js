@@ -2,9 +2,17 @@ import React from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text } from 'react-native';
 import { colors, radius, spacing } from '../services/theme';
 
-export default function PrimaryButton({ title, onPress, variant = 'primary', loading = false }) {
+export default function PrimaryButton({
+  title,
+  onPress,
+  variant = 'primary',
+  loading = false,
+  testID,
+  ...pressableProps
+}) {
   return (
     <Pressable
+      testID={testID}
       style={({ pressed }) => [
         styles.button,
         variant === 'secondary' && styles.secondary,
@@ -13,6 +21,7 @@ export default function PrimaryButton({ title, onPress, variant = 'primary', loa
       ]}
       onPress={onPress}
       disabled={loading}
+      {...pressableProps}
     >
       {loading ? (
         <ActivityIndicator color={colors.text} />
