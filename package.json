@@ -1,0 +1,39 @@
+{
+  "name": "devmobile",
+  "version": "1.0.0",
+  "description": "- João Pedro Silva Pereira\r - Arthur \r - Guilhermer do Couto\r - Tiago Alexsander\r - Caio Victor Veras Bastos",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "migrate": "drizzle-kit migrate",
+    "generate": "drizzle-kit generate"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bornfps/devmobile.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bornfps/devmobile/issues"
+  },
+  "homepage": "https://github.com/bornfps/devmobile#readme",
+  "dependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/inquirer": "^9.0.9",
+    "@types/node": "^25.6.0",
+    "@types/prompt-sync": "^4.2.3",
+    "@types/uuid": "^10.0.0",
+    "better-sqlite3": "^12.9.0",
+    "drizzle-kit": "^0.31.10",
+    "drizzle-orm": "^0.45.2",
+    "inquirer": "^13.4.1",
+    "prompt-sync": "^4.2.0",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2",
+    "uuid": "^13.0.0"
+  }
+}
