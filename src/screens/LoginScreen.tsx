@@ -14,17 +14,25 @@ import {
 interface LoginScreenProps {
   onNavigateToRegister?: () => void;
   onNavigateToForgotPassword?: () => void;
-  onLoginSuccess?: () => void;  
+  onLogin?: (email: string, password: string) => void;
+  loginError?: string;
 }
 
 const LoginScreen: React.FC<LoginScreenProps> = ({
     onNavigateToRegister,
   onNavigateToForgotPassword,
-  onLoginSuccess,  
+  onLogin,
+  loginError,
 }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+
+  const handleSubmit = () => {
+    if (onLogin) {
+      onLogin(email, password);
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -73,9 +81,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
           {/* Password */}
           <View style={styles.labelRow}>
             <Text style={styles.label}>SENHA</Text>
-            <TouchableOpacity style={styles.primaryButton} activeOpacity={0.85} onPress={onLoginSuccess}>
-          <Text style={styles.primaryButtonText}>Log in</Text>
-        </TouchableOpacity>
+            <TouchableOpacity style={styles.forgotButton} activeOpacity={0.85} onPress={onNavigateToForgotPassword}>
+              <Text style={styles.forgotLink}>Esqueci</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.inputWrapper}>
             <TextInput
@@ -94,8 +102,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
             </TouchableOpacity>
           </View>
 
+          {loginError ? <Text style={styles.errorText}>{loginError}</Text> : null}
+
           {/* Login Button */}
-          <TouchableOpacity style={styles.primaryButton} activeOpacity={0.85}>
+          <TouchableOpacity style={styles.primaryButton} activeOpacity={0.85} onPress={handleSubmit}>
             <Text style={styles.primaryButtonText}>Log in</Text>
           </TouchableOpacity>
 
@@ -196,6 +206,16 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#4D9EF5',
     letterSpacing: 0.8,
+  },
+  forgotButton: {
+    padding: 4,
+  },
+  errorText: {
+    color: '#F87171',
+    fontSize: 13,
+    marginTop: 12,
+    marginBottom: -8,
+    textAlign: 'center',
   },
   inputWrapper: {
     position: 'relative',

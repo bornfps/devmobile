@@ -7,8 +7,29 @@ import ProfessionalProfileScreen from './src/screens/ProfessionalProfileScreen';
 
 type Screen = 'login' | 'register' | 'forgot' | 'contractorHome' | 'professionalProfile';
 
+type UserRole = 'contractor' | 'professional';
+
 const App: React.FC = () => {
   const [currentScreen, setCurrentScreen] = useState<Screen>('login');
+  const [loginError, setLoginError] = useState<string | undefined>();
+
+  const handleLogin = (email: string, password: string) => {
+    const normalizedEmail = email.trim().toLowerCase();
+
+    if (normalizedEmail === 'contratante@gmail.com' && password === '123') {
+      setLoginError(undefined);
+      setCurrentScreen('contractorHome');
+      return;
+    }
+
+    if (normalizedEmail === 'professional@gmail.com' && password === '1234') {
+      setLoginError(undefined);
+      setCurrentScreen('professionalProfile');
+      return;
+    }
+
+    setLoginError('Usuário ou senha inválidos.');
+  };
 
   switch (currentScreen) {
     case 'register':
@@ -39,9 +60,16 @@ const App: React.FC = () => {
     default:
       return (
         <LoginScreen
-          onNavigateToRegister={() => setCurrentScreen('register')}
-          onNavigateToForgotPassword={() => setCurrentScreen('forgot')}
-          onLoginSuccess={() => setCurrentScreen('contractorHome')}
+          onNavigateToRegister={() => {
+            setLoginError(undefined);
+            setCurrentScreen('register');
+          }}
+          onNavigateToForgotPassword={() => {
+            setLoginError(undefined);
+            setCurrentScreen('forgot');
+          }}
+          onLogin={handleLogin}
+          loginError={loginError}
         />
       );
   }
